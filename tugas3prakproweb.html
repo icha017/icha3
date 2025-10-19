@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tugas Javascript </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background-color: #222;
+      color: white;
+    }
+    .card {
+      background: #f0f0f0;
+      padding: 10px;
+      margin: 10px auto;
+      width: 200px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .card span {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      color: red;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #popupForm {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tugas Javascript</h1>
+
+  <!-- Tombol Mode Malam -->
+  <button id="modeBtn">🌙Mode Malam</button>
+  <br><br>
+
+  <!-- Tombol Tambah Card -->
+  <button id="addCardBtn">➕Tambah Card</button>
+  <div id="cardContainer"></div>
+  <br>
+
+  <!-- Tombol Popup Form -->
+  <button id="popupBtn">📋Tampilkan Form</button>
+  <div id="popupForm">
+    <h3>Form Input</h3>
+    <input type="text" id="namaInput" placeholder="Masukkan Nama"><br><br>
+    <input type="email" id="emailInput" placeholder="Masukkan Email"><br><br>
+    <button onclick="tutupForm()">Tutup</button>
+  </div>
+  <br><br>
+
+  <!-- Tombol Pembaca KOM -->
+  <button id="komBtn">🔍Cek KOM Berdasarkan NIM</button>
+
+  <script>
+    // ======= 1. Mode Malam =======
+    const modeBtn = document.getElementById("modeBtn");
+    modeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      modeBtn.textContent = 
+        document.body.classList.contains("dark-mode") ? "☀️Mode Pagi" : "🌙 Mode Malam";
+    });
+
+   const cardContainer = document.getElementById("cardContainer");
+    const addCardBtn = document.getElementById("addCardBtn");
+    let index = 1;
+
+     // ======= 2. TAMBAH CARD & HAPUS CARD TERAKHIR =======
+    addCardBtn.addEventListener("click", () => {
+      // kalau gak ada card, mulai lagi dari 1
+      if (cardContainer.children.length === 0) {
+        index = 1;
+      }
+
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.innerHTML = `Card ${index} <span class="hapus">&times;</span>`;
+
+      const tombolHapus = card.querySelector(".hapus");
+      tombolHapus.addEventListener("click", () => {
+        const lastCard = cardContainer.lastElementChild;
+        if (lastCard) {
+          lastCard.remove();
+
+          // kalau semua card udah kehapus, reset index ke 1
+          if (cardContainer.children.length === 0) {
+            index = 1;
+          }
+        }
+      });
+
+      cardContainer.appendChild(card);
+      index++;
+    });
+
+
+
+    // ======= 3. Popup Form =======
+    const popupBtn = document.getElementById("popupBtn");
+    const popupForm = document.getElementById("popupForm");
+
+    popupBtn.addEventListener("click", () => {
+      popupForm.style.display = "block";
+    });
+
+    function tutupForm() {
+      popupForm.style.display = "none";
+    }
+
+    // ======= 4. Pembaca KOM Berdasarkan NIM =======
+    const komBtn = document.getElementById("komBtn");
+
+    komBtn.addEventListener("click", () => {
+      const nim = prompt("Masukkan NIM Mahasiswa TI:");
+      if (!nim) {
+        alert("NIM tidak boleh kosong!");
+        return;
+      }
+
+     const lastDigit = nim[nim.length - 1];
+        if (["0","1","2","3"].includes(lastDigit)) kom = "A";
+        else if (["4","5","6"].includes(lastDigit)) kom = "B";
+        else kom = "C";
+
+        alert(`NIM ${nim} berada di KOM ${kom}`);
+    }
+    );
+  </script>
+</body>
+</html>
